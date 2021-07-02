@@ -19,6 +19,10 @@ API для системы опросов пользователей
 - Создайте папку для проекта  `mkdir polls` и перейдите в нее `cd polls`
 - Склонируйте этот репозиторий в текущую папку `git clone https://github.com/ps-iria/polls .`
 - Запустите docker-compose `sudo docker-compose up -d`
+- Примените миграции `sudo docker-compose exec web python manage.py migrate`
+- Соберите статику `sudo docker-compose exec web python manage.py collectstatic --no-input`
+- Создайте суперпользователя Django `sudo docker-compose exec web python manage.py createsuperuser`
+
 
 ## **Технологии**
 - [Python](https://www.python.org/)
