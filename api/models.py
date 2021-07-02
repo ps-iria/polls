@@ -1,10 +1,21 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+import datetime
+
+User = get_user_model()
 
 QUESTION = (
     ('текст', 'ответ текстом'),
     ('один вариант', 'ответ с выбором одного варианта'),
     ('несколько вариантов', 'ответ с выбором нескольких вариантов'),
 )
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(
+        'Question', related_name='choices', on_delete=models.CASCADE
+    )
+    text = models.CharField(max_length=64,)
 
 
 class Poll(models.Model):
@@ -47,3 +58,19 @@ class PollQuestion(models.Model):
         on_delete=models.CASCADE,
         related_name="questions",
     )
+
+
+
+class Vote(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             blank=True, null=True)
+    date = models.DateField(default=datetime.date.today(), editable=False)
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    vote = models.ForeignKey(Vote, related_name='answers',
+                             on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    value = models.CharField(max_length=128, blank=True, null=True)

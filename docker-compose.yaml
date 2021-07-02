@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:12.4
+    restart: always
+    ports:
+    - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+
+  web:
+    image: psiria/polls:latest
+    restart: always
+    volumes:
+      - static_files:/code/static
+      - media_files:/code/media
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+
+volumes:
+  postgres_data:
+  static_files:
+  media_files:
