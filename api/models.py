@@ -1,6 +1,7 @@
+import datetime
+
 from django.contrib.auth import get_user_model
 from django.db import models
-import datetime
 
 User = get_user_model()
 
@@ -15,7 +16,7 @@ class Choice(models.Model):
     question = models.ForeignKey(
         'Question', related_name='choices', on_delete=models.CASCADE
     )
-    text = models.CharField(max_length=64,)
+    text = models.CharField(max_length=64, )
 
 
 class Poll(models.Model):
@@ -58,7 +59,6 @@ class PollQuestion(models.Model):
         on_delete=models.CASCADE,
         related_name="questions",
     )
-
 
 
 class Vote(models.Model):

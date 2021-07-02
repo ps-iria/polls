@@ -1,12 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
-from rest_framework.generics import get_object_or_404
-from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from api.models import Poll, Question, Vote, Choice, Answer
+from api.models import Poll, Question, Vote, Answer
 from api.permissions import IsAdminOrReadOnly, IsAdmin
 from api.serializer import PollsSerializer, QuestionsSerializer, \
     VotesSerializer, ChoiceSerializer

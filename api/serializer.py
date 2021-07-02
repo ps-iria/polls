@@ -1,10 +1,10 @@
 import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.relations import PrimaryKeyRelatedField
 
-from api.models import Poll, Question, Choice, Answer, Vote, QUESTION, \
-    PollQuestion
+from api.models import Poll, Question, Choice, Answer, Vote, QUESTION
 
 
 class PKField(serializers.PrimaryKeyRelatedField):
@@ -39,7 +39,9 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
 
 class PollsSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all())
+    questions = serializers.PrimaryKeyRelatedField(many=True,
+                                                   queryset=Question.objects.all())
+
     # questions = QuestionsSerializer(many=True, )
     # questions = PKField(queryset=Question.objects.all())
 
@@ -56,7 +58,7 @@ class PollsSerializer(serializers.ModelSerializer):
 
 class AnswersSerializer(PrimaryKeyRelatedField, serializers.ModelSerializer):
     choice = ChoiceSerializer(read_only=True)
-    choice_id = PKField(queryset=Choice.objects.all(),)
+    choice_id = PKField(queryset=Choice.objects.all(), )
 
     question = QuestionsSerializer(read_only=True)
     question_id = PKField(queryset=Question.objects.all(),
