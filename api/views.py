@@ -9,38 +9,30 @@ from api.serializer import PollsSerializer, QuestionsSerializer, \
 
 User = get_user_model()
 
-class PollsViewSet(viewsets.ModelViewSet):
+
+class BaseViewSet(viewsets.ModelViewSet):
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+
+class PollsViewSet(BaseViewSet):
     queryset = Poll.objects.all()
     serializer_class = PollsSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
-    def perform_create(self, serializer):
-        serializer.save()
 
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def perform_destroy(self, instance):
-        instance.delete()
-
-
-class QuestionViewSet(viewsets.ModelViewSet):
+class QuestionViewSet(BaseViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionsSerializer
     permission_classes = (IsAdmin,)
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def perform_destroy(self, instance):
-        instance.delete()
 
 
 class VoteViewSet(viewsets.ModelViewSet):

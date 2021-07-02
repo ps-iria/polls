@@ -39,16 +39,16 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
 
 class PollsSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(many=True,
-                                                   queryset=Question.objects.all())
-
-    # questions = QuestionsSerializer(many=True, )
-    # questions = PKField(queryset=Question.objects.all())
+    questions = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Question.objects.all()
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if 'view' in self.context and self.context['view'].action in ['update',
-                                                                      'partial_update']:
+        if ('view' in self.context
+                and self.context['view'].action in ['update',
+                                                    'partial_update']):
             self.fields.pop('start_date', None)
 
     class Meta:
