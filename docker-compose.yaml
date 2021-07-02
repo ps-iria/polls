@@ -1,28 +1,22 @@
 version: "3.7"
 
+volumes:
+  postgres_data:
+
 services:
   db:
     image: postgres:12.4
-    restart: always
-    ports:
-    - "5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
-
   web:
     image: psiria/polls:latest
     restart: always
-    volumes:
-      - static_files:/code/static
-      - media_files:/code/media
+    command: gunicorn polls.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
     depends_on:
       - db
     env_file:
-      - ./.env
-
-volumes:
-  postgres_data:
-  static_files:
-  media_files:
+      - ./.env 
